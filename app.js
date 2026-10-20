@@ -24,7 +24,7 @@ function render() {
   for(let rank=8;rank>=1;rank--) for(let file=0;file<8;file++){
     const square='abcdefgh'[file]+rank, piece=game.get(square), button=document.createElement('button');
     button.type='button';button.dataset.square=square;
-    button.className='square'+((file+rank)%2===0?' dark':'');
+    button.className='square'+((file+rank)%2===1?' dark':'');
     if(piece?.color==='w')button.classList.add('white-piece');
     if(square===selected)button.classList.add('selected');
     if(last&&(last.from===square||last.to===square))button.classList.add('last');
