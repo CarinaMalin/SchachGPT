@@ -4,3 +4,30 @@
 .board-stage{position:relative}.board-stage #arrows{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible}.square:disabled{opacity:1;cursor:default}.square.under-attack{outline:3px solid #a33e2d;outline-offset:-4px}.board-legend{font-size:11px;color:var(--muted);line-height:1.6;margin:9px 0}.training-settings{background:#e9eedf;border:1px solid #dce3d3;border-radius:12px;padding:14px 17px;margin-bottom:10px}.training-settings>label{font-size:11px;font-weight:700}.training-settings select{font-size:14px;font-weight:600;max-width:100%;width:100%;padding:8px 0}.training-settings p{font-size:12px;line-height:1.6;color:#536252;margin:2px 0}.trainer{border-top:4px solid #8eaa90}.trainer .chips button{font-size:12px;min-height:40px}.threat-item{background:#fff0e7;border-left:3px solid #b45b3c;border-radius:4px;padding:10px!important;font-size:12px!important;margin:10px 0 0!important}.warning{background:#fff0de;border:1px solid #cb9a63;border-radius:10px;padding:16px;margin-top:12px}.warning>p{font-size:13px;line-height:1.6}.warning .fine{font-size:11px;color:#6d5945}.warning .toolbar{margin-top:12px}.warning #cancel-move{background:var(--green);color:#fff}.warning #confirm-move{background:transparent}#view-banner{background:#dceaf3;color:#23506a;border-radius:8px 8px 0 0;padding:10px 12px;font-size:12px;font-weight:600}#line-controls{margin-top:14px;background:#eef3f6;border-radius:8px;padding:12px}#line-label{font-size:12px;margin-bottom:10px}[hidden]{display:none!important}@media(max-width:650px){.training-settings{padding:12px 14px}.trainer{border-top-width:3px}.board-legend{font-size:10px}}
 
 .help-switch{display:flex;align-items:center;gap:12px;justify-content:space-between;cursor:pointer;position:relative;padding:3px 0 14px;margin-bottom:12px;border-bottom:1px solid #ced8c3;min-height:48px}.help-switch strong{display:block;font-size:15px}.help-switch small{display:block;font-size:11px;font-weight:400;color:#536252;margin-top:4px}.help-switch input{position:absolute;right:0;top:0;width:50px;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}.switch-track{width:46px;height:26px;border-radius:20px;background:#849080;flex:none;position:relative;transition:background .15s}.switch-track:after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;background:white;border-radius:50%;transition:transform .15s}.help-switch input:checked+.switch-track{background:#294e40}.help-switch input:checked+.switch-track:after{transform:translateX(20px)}.help-switch input:focus-visible+.switch-track{outline:3px solid #b67c37;outline-offset:3px}
+
+/* A darker room around the familiar, high-contrast chessboard. */
+.header-actions{display:flex;align-items:center;gap:12px}#theme-toggle{min-height:42px;font-size:12px;padding:8px 13px;white-space:nowrap}
+:root[data-theme="dark"]{color-scheme:dark;--ink:#e5eee4;--muted:#a9b8ad;--paper:#141e1b;--line:#3b4e43;--accent:#314738;--green:#345b46}
+[data-theme="dark"] .card{background:#1c2a24}
+[data-theme="dark"] .coach,[data-theme="dark"] .training-settings{background:#24372b;border-color:#41513e}
+[data-theme="dark"] .badge,[data-theme="dark"] .avatar,[data-theme="dark"] .avatar.white{background:#304436}
+[data-theme="dark"] .training-settings p,[data-theme="dark"] .help-switch small{color:#b7c7b4}
+[data-theme="dark"] .help-switch{border-color:#485a42}
+[data-theme="dark"] button:not(.square){background:#2c4033;color:#e5eee4;border-color:#4b5f4e}
+[data-theme="dark"] button:not(.square):hover{background:#3a5240;border-color:#8da681}
+[data-theme="dark"] .chips button{background:#2a3e31}
+[data-theme="dark"] .primary,[data-theme="dark"] .warning #cancel-move{background:#42684d;color:#fff}
+[data-theme="dark"] textarea{background:#17231d;color:#e5eee4}
+[data-theme="dark"] textarea::placeholder{color:#9aac9f}
+[data-theme="dark"] select option{background:#1c2a24;color:#e5eee4}
+[data-theme="dark"] .board-shell{background:#2f4035;box-shadow:0 9px 28px #0004}
+[data-theme="dark"] .move-row:nth-child(odd){background:#26382c}
+[data-theme="dark"] .file-actions button{background:transparent}
+[data-theme="dark"] .threat-item{background:#453026;border-left-color:#e9a57c}
+[data-theme="dark"] .warning{background:#3b3022;border-color:#b9955f}
+[data-theme="dark"] .warning .fine{color:#d5c3a9}
+[data-theme="dark"] #view-banner,[data-theme="dark"] #line-controls{background:#263d48;color:#daebf4}
+[data-theme="dark"] #notice{background:#d9e9d4;color:#1c3022}
+[data-theme="dark"] .help-switch input:checked+.switch-track{background:#6a945d}
+[data-theme="dark"] dialog::backdrop{background:#000a}
+@media(max-width:650px){.header-actions{gap:8px}.header-actions .badge{display:none}#theme-toggle{min-height:44px}}

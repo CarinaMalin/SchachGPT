@@ -60,3 +60,7 @@ Den Ordner über einen beliebigen lokalen statischen HTTP-Server öffnen (nicht 
 ## Grenzen
 
 Du spielst Weiß. Kein Login, kein Sprachchat, kein vollständiges automatisches Partie-Review und keine automatische Gerätesynchronisierung. Die Erklärungen sind regelbasiert, kein freies Gespräch. Es gibt keine Garantie, dass alle taktischen Drohungen erkannt werden; eine Beispielvariante ist keine Vorhersage. Ein Engine-Ladefehler wird angezeigt und kann durch Neuladen nach Wiederherstellung der Verbindung behoben werden.
+
+## Darkmode
+
+Oben rechts wechselt die Schaltfläche „Dunkel“/„Hell“ das Erscheinungsbild sofort, auch während einer Partie. Hintergrund, Karten, Eingaben und Hinweise passen sich an; die bewährten Brett- und Figurenfarben bleiben gut unterscheidbar. Ohne gespeicherte Auswahl gilt die Systemeinstellung. Deine Auswahl wird getrennt von der Partie lokal gespeichert.
