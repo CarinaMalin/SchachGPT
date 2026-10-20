@@ -16,10 +16,24 @@ https://carinamalin.github.io/SchachGPT/
 
 Die Adresse funktioniert erst, wenn Pages aktiviert und die Bereitstellung erfolgreich abgeschlossen ist.
 
+## Trainingsmodus
+
+- **Begleitet:** Erklärt den letzten gegnerischen Zug, markiert neue Angriffe und zeigt vor deinem Zug eine Vorschau, wenn Schwarz anschließend eine Figur (Springer, Läufer, Turm oder Dame) legal schlagen könnte. Du kannst zurück zur Stellung oder das mögliche Opfer bewusst spielen.
+- **Selbst üben:** Erklärungen und Angriffe auf Knopfdruck, keine automatische Zugwarnung.
+- **Herausforderung:** Keine automatischen Erklärungen oder Warnungen. Hilfen bleiben bewusst abrufbar.
+
+Die **Gegnerstärke ist unabhängig** davon: Reduziert (Stockfish Skill 0), Mittel (5), Sehr stark (20). Auch reduziert ist die Engine nicht unbedingt ein leichter Gegner. Keine zugesicherte Elo-Zahl.
+
+**Drohungen zeigen** markiert bis zu drei Angriffe auf weiße Figuren. Rot bedeutet Angriff, Blau den betrachteten Zug. Angriffspfeile zeigen geometrische Kontrolle (auch durch gefesselte Figuren), keine garantierten Gewinne. Die Warnung vor einem Zug prüft dagegen tatsächlich legale gegnerische Schlagzüge; sie berechnet keine vollständige Tauschfolge und kann deshalb auch bei guten Opfern erscheinen.
+
+**Letzten Zug erklären** beschreibt überprüfbare Brettmerkmale: Schlagen, Schach, Matt, neue Angriffe, Gabeln, Entwicklung und Rochade. Ist kein klares Motiv erkennbar, sagt die App das. Sie behauptet nicht, Gedanken oder langfristige Absichten der Engine zu kennen.
+
+**Beispielvariante berechnen** lässt Stockfish eine mögliche Folge mit Gegenwehr berechnen (bis zu sechs Halbzüge). Mit Weiter/Zurück wird diese auf dem Brett abgespielt und erklärt. Die echte Partie bleibt unverändert; „Zur Partie“ beendet die Ansicht. Während der Vorschau sind Züge und der Partie-Export gesperrt, damit Vorschau und echte Stellung nicht verwechselt werden.
+
 ## Nutzung
 
 - Figur antippen, dann ein markiertes Zielfeld auswählen.
-- Spielstärke: Locker, Übung oder Knifflig (keine zugesicherte Elo-Zahl).
+- Trainingsmodus und Gegnerstärke getrennt einstellen.
 - Zurücknehmen nimmt deinen letzten Zug samt gegnerischer Antwort zurück.
 - Bei Bauernumwandlung kann die neue Figur gewählt werden.
 - „Stellung für den Chat kopieren“ kopiert FEN, PGN und deine Frage. Anschließend in einen vorhandenen Chat einfügen.
@@ -39,6 +53,6 @@ Die jeweiligen Anbieter erhalten übliche Verbindungsdaten beim Laden. Züge und
 
 Den Ordner über einen beliebigen lokalen statischen HTTP-Server öffnen (nicht per `file://`). Es ist kein Build erforderlich. GitHub Pages stellt HTML, CSS und JavaScript direkt bereit.
 
-## Grenzen der ersten Version
+## Grenzen
 
-Du spielst Weiß. Kein Login, kein Sprachchat, kein automatisches Review und keine automatische Gerätesynchronisierung. Die drei Lernhilfe-Schaltflächen bieten vorbereitete Texte; sie führen kein freies Gespräch. Ein Engine-Ladefehler wird angezeigt und kann durch Neuladen nach Wiederherstellung der Verbindung behoben werden.
+Du spielst Weiß. Kein Login, kein Sprachchat, kein vollständiges automatisches Partie-Review und keine automatische Gerätesynchronisierung. Die Erklärungen sind regelbasiert, kein freies Gespräch. Es gibt keine Garantie, dass alle taktischen Drohungen erkannt werden; eine Beispielvariante ist keine Vorhersage. Ein Engine-Ladefehler wird angezeigt und kann durch Neuladen nach Wiederherstellung der Verbindung behoben werden.
