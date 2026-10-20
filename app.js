@@ -3,12 +3,12 @@ const $ = id => document.getElementById(id);
 const names = {p:'Bauer',n:'Springer',b:'Läufer',r:'Turm',q:'Dame',k:'König'};
 const symbols = {p:'♟',n:'♞',b:'♝',r:'♜',q:'♛',k:'♚'};
 let Chess, game, selected = null, targets = [], worker, ready = false, job = null, generation = 0, noticeTimer, engineTimer;
-let trainingMode='guided', overlays=[], pendingMove=null, variation=null;
+let trainingMode='guided', helpEnabled=true, overlays=[], pendingMove=null, variation=null;
 const key = 'schachgpt-game-v1';
 function notice(message) { $('notice').textContent = message; clearTimeout(noticeTimer); noticeTimer = setTimeout(()=>$('notice').textContent='',5500); }
 function coach(title,text) { $('coach-title').textContent=title; $('coach-text').textContent=text; }
 function persist() {
-  try { localStorage.setItem(key,JSON.stringify({pgn:game.pgn(),level:$('level').value,trainingMode})); }
+  try { localStorage.setItem(key,JSON.stringify({pgn:game.pgn(),level:$('level').value,trainingMode,helpEnabled})); }
   catch { $('save-status').textContent='Speichern im Browser ist nicht verfügbar. Nutze den Partie-Export.'; }
 }
 function status() {
@@ -47,10 +47,18 @@ function render() {
   }
   $('board').replaceChildren(fragment);
   $('status').textContent=status();
-  $('hint').disabled=!ready||!!job||!!pendingMove||!!variation||game.turn()!=='w'||game.isGameOver();
+  $('hint').disabled=!helpEnabled||!ready||!!job||!!pendingMove||!!variation||game.turn()!=='w'||game.isGameOver();
   $('variation').disabled=$('hint').disabled;
-  $('threats').disabled=!!pendingMove||!!variation||!!job||game.turn()!=='w';
-  $('explain').disabled=!!pendingMove||!!variation||!!job||!game.history().length;
+  $('threats').disabled=!helpEnabled||!!pendingMove||!!variation||!!job||game.turn()!=='w';
+  $('explain').disabled=!helpEnabled||!!pendingMove||!!variation||!!job||!game.history().length;
+  $('trainer-card').hidden=!helpEnabled;
+  $('coach-card').hidden=!helpEnabled;
+  $('help-off-card').hidden=helpEnabled;
+  $('board-legend').hidden=!helpEnabled;
+  $('help-toggle').checked=helpEnabled;
+  $('help-state').textContent=helpEnabled?'An · mit Erklärungen':'Aus · ohne Spoiler';
+  $('training-mode').disabled=!helpEnabled;
+  $('mode-description').hidden=!helpEnabled;
   $('undo').disabled=game.history().length===0;
   $('copy').disabled=!!pendingMove||!!variation;$('export').disabled=!!pendingMove||!!variation;
   $('view-banner').hidden=!pendingMove&&!variation;
@@ -74,6 +82,7 @@ function resetTraining(){
 }
 function drawArrows(){
   const svg=$('arrows');svg.replaceChildren();
+  if(!helpEnabled)return;
   const create=(tag,attrs)=>{const el=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));return el;};
   const defs=create('defs',{});
   for(const [kind,color] of [['threat','#a33e2d'],['move','#226c9b']]){
@@ -87,6 +96,7 @@ function drawArrows(){
   }
 }
 function showThreats(){
+  if(!helpEnabled)return;
   const list=attacks(game,'b').slice(0,3);
   overlays=list.map(a=>({...a,kind:'threat'}));
   $('threat-list').replaceChildren();
@@ -100,12 +110,14 @@ function showThreats(){
   render();
 }
 function explainLast(){
+  if(!helpEnabled)return;
   const move=game.history({verbose:true}).at(-1);if(!move)return;
   const explanation=describeMove(Chess,move);
   trainer(explanation.title,explanation.text);overlays=explanation.arrows;$('threat-list').replaceChildren();render();
 }
 function refreshTraining(){
   resetTraining();
+  if(!helpEnabled)return;
   if(trainingMode==='guided'&&game.turn()==='w'&&!game.isGameOver()){
     if(game.history().length)explainLast();else showThreats();
   }else{
@@ -167,6 +179,7 @@ function startEngine() {
       clearTimeout(engineTimer);
       const completed=job;job=null;
       if(game.fen()!==completed.fen){render();return;}
+      if(completed.kind!=='reply'&&!helpEnabled){render();return;}
       if(completed.kind==='line'){
         const steps=buildLine(Chess,completed.fen,completed.pv||[]);
         if(!steps.length){notice('Keine Beispielvariante verfügbar. Bitte noch einmal versuchen.');render();return;}
@@ -189,6 +202,7 @@ function startEngine() {
   worker.postMessage('uci');
 }
 function search(kind) {
+  if(kind!=='reply'&&!helpEnabled)return;
   if(!ready||job||pendingMove||variation||game.isGameOver())return;
   job={kind,fen:game.fen()};render();
   worker.postMessage(`setoption name Skill Level value ${kind==='reply'?$('level').value:20}`);
@@ -211,7 +225,7 @@ async function playSquare(square) {
       if(!['q','r','b','n'].includes(promotion))return;
     }
     const input={from:selected,to:square,...(promotion?{promotion}:{})};
-    if(trainingMode==='guided'){
+    if(helpEnabled&&trainingMode==='guided'){
       const risks=risksAfter(Chess,game,input);
       if(risks.length){
         const board=new Chess(game.fen()),move=board.move(input);
@@ -242,6 +256,7 @@ async function init(){
     if(['0','5','20'].includes(saved?.level))$('level').value=saved.level;
     if(saved?.level==='12')$('level').value='20';
     if(['guided','practice','challenge'].includes(saved?.trainingMode))trainingMode=saved.trainingMode;
+    if(typeof saved?.helpEnabled==='boolean')helpEnabled=saved.helpEnabled;
   }catch{game=new Chess();notice('Die gespeicherte Partie konnte nicht geladen werden. Eine neue Partie wurde vorbereitet.');}
   $('board').addEventListener('click',e=>{const square=e.target.closest('[data-square]');if(square)playSquare(square.dataset.square);});
   $('undo').onclick=()=>{
@@ -257,6 +272,16 @@ async function init(){
   };
   $('hint').onclick=()=>{selected=null;targets=[];search('hint');};
   $('level').onchange=persist;
+  $('help-toggle').onchange=()=>{
+    helpEnabled=$('help-toggle').checked;
+    const wasPreview=!!pendingMove;
+    selected=null;targets=[];refreshTraining();
+    // Discard a pending hint search, but never interrupt the opponent's move.
+    if(!helpEnabled&&job&&job.kind!=='reply')startEngine();
+    if(helpEnabled)plan();
+    persist();render();
+    notice(helpEnabled?'Lernhilfen eingeschaltet.':wasPreview?'Lernhilfen aus. Der vorgemerkte Zug wurde nicht gespielt.':'Lernhilfen ausgeschaltet. Deine Partie läuft unverändert weiter.');
+  };
   $('training-mode').value=trainingMode;
   const modeText=()=>{
     $('mode-description').textContent=trainingMode==='guided'?'Gegnerzüge werden erklärt und Angriffe markiert. Vor möglichen Figurenverlusten kannst du deinen Zug überdenken.':trainingMode==='practice'?'Du spielst selbstständig. Drohungen, Erklärungen und Beispielvarianten erhältst du auf Knopfdruck.':'Keine automatischen Warnungen. Finde einen eigenen Plan; Hilfe bleibt auf Wunsch verfügbar.';

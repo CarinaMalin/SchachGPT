@@ -16,6 +16,10 @@ https://carinamalin.github.io/SchachGPT/
 
 Die Adresse funktioniert erst, wenn Pages aktiviert und die Bereitstellung erfolgreich abgeschlossen ist.
 
+## Lernhilfen jederzeit ein- und ausschalten
+
+Der Schalter **Lernhilfen** über dem Brett funktioniert mitten in der Partie. Ausgeschaltet verschwinden Angriffspfeile, Trainings- und Eröffnungserklärungen, Zugtipps und Warnungen. Eine offene Beispielvariante wird geschlossen; ein noch nicht bestätigter Zug wird verworfen. Die echte Partie und Gegnerstärke bleiben unverändert. Normale Regeln (legale Zielfelder und Schachanzeige) bleiben sichtbar. Die Einstellung bleibt auf dem Gerät gespeichert. Beim Einschalten gilt wieder der gewählte Trainingsmodus.
+
 ## Trainingsmodus
 
 - **Begleitet:** Erklärt den letzten gegnerischen Zug, markiert neue Angriffe und zeigt vor deinem Zug eine Vorschau, wenn Schwarz anschließend eine Figur (Springer, Läufer, Turm oder Dame) legal schlagen könnte. Du kannst zurück zur Stellung oder das mögliche Opfer bewusst spielen.
